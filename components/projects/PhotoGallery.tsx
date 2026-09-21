@@ -33,6 +33,7 @@ export function PhotoGallery() {
         return (
           <Reveal
             as="figure"
+            variant="image"
             id={photo.id}
             key={photo.id}
             className={cx("gallery-figure col-span-1", span)}
