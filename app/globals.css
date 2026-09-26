@@ -195,6 +195,8 @@ img { transition: transform 900ms cubic-bezier(.22,1,.36,1); }
 .reading-progress { position: absolute; inset: auto 0 0; height: 2px; background: var(--bronze); transform-origin: left; pointer-events: none; }
 .header-inner { height: 96px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
 .brand-wordmark { display: flex; align-items: center; gap: 12px; }
+.brand-badge { width: 56px; height: 56px; flex-shrink: 0; margin-right: 2px; }
+footer .brand-badge { width: 72px; height: 72px; }
 .brand-monogram { font-family: var(--font-serif); font-size: 34px; line-height: 1; letter-spacing: -.02em; font-weight: 450; }
 .brand-descriptor { border-left: 1px solid currentColor; padding-left: 12px; font-size: 9px; line-height: 1.6; letter-spacing: .19em; text-transform: uppercase; }
 .header-cta { display: inline-flex; align-items: center; gap: 26px; background: var(--charcoal); color: var(--ivory); padding: 13px 20px; font-size: 11px; transition: background .3s; }
@@ -320,6 +322,7 @@ footer .eyebrow { color: #c2b99b; }
 @media (min-width: 1500px) { .wrapper { max-width: 100rem; padding-inline: 70px; } }
 @media (max-width: 1023px) {
   .header-inner { height: 80px; }
+  .site-header .brand-badge { width: 48px; height: 48px; }
   .editorial-hero { padding-top: 110px; }
   .hero-title { font-size: 10.5vw; }
   .hero-note { width: 210px; }
@@ -504,3 +507,20 @@ footer .eyebrow { color: #c2b99b; }
 @keyframes viewer-enter { from { opacity: 0; } to { opacity: 1; } }
 @keyframes viewer-image { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
+
+/* Contact page map: Google supplies the pin, the card supplies the name. */
+.office-map-layout { position: relative; }
+.office-map { position: relative; height: clamp(440px, 42vw, 620px); overflow: hidden; background: var(--offwhite); }
+.office-map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: saturate(.6) sepia(.06); }
+.office-map-card { position: absolute; top: 28px; left: calc(var(--spacing-gutter-lg) + 28px); width: 340px; display: flex; flex-direction: column; gap: 16px; padding: 28px 28px 24px; background: var(--ivory); box-shadow: 0 18px 40px -24px #292e2560; }
+.office-map-name { display: flex; align-items: center; gap: 14px; }
+.office-map-name img { width: 52px; height: 52px; flex-shrink: 0; }
+.office-map-name h2 { font-family: var(--font-serif); font-size: 30px; font-weight: 350; line-height: 1.1; letter-spacing: -.025em; }
+.office-map-card address { font-style: normal; font-size: 13px; line-height: 1.85; color: var(--charcoal-soft); }
+.office-map-card .text-link { width: 100%; }
+@media (min-width: 1500px) { .office-map-card { left: 98px; } }
+@media (max-width: 1023px) { .office-map-card { left: calc(var(--spacing-gutter-sm) + 20px); top: 20px; } }
+@media (max-width: 767px) {
+  .office-map { height: 360px; }
+  .office-map-card { position: static; width: auto; padding: 24px 0 0; background: none; box-shadow: none; }
+}

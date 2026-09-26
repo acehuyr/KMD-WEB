@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ContactDetails } from "@/components/contact/ContactDetails";
 import { EnquiryForm } from "@/components/contact/EnquiryForm";
+import { OfficeMap } from "@/components/contact/OfficeMap";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
+    <>
     <section aria-labelledby="contact-heading" className="bg-ivory pb-section-md pt-32 md:pt-40 lg:pb-section-lg">
       <div className="wrapper flex flex-col gap-16">
         <SectionHeading
@@ -26,5 +28,7 @@ export default function ContactPage() {
         </div>
       </div>
     </section>
+    <OfficeMap />
+    </>
   );
 }

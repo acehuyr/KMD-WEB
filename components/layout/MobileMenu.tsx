@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
@@ -57,7 +58,8 @@ export function MobileMenu({
           className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-charcoal text-ivory lg:hidden"
         >
           <div className="wrapper flex h-20 items-center justify-between">
-            <span className="font-serif text-xl tracking-wide">
+            <span className="flex items-center gap-3 font-serif text-xl tracking-wide">
+              <Image src="/brand/kmd-interior-badge.webp" alt="" width={80} height={80} quality={90} className="h-11 w-11" />
               KMD Interior
             </span>
             <button

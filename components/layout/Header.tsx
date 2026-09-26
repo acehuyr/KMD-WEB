@@ -59,7 +59,7 @@ export function Header() {
     <header className={`site-header fixed inset-x-0 top-0 z-50 ${isScrolled ? "is-scrolled" : ""} ${isTucked && !isMenuOpen ? "is-tucked" : ""}`}>
       {!reduce && <motion.div aria-hidden="true" className="reading-progress" style={{ scaleX: progress }} />}
       <div className="wrapper header-inner">
-        <Logo />
+        <Logo eager />
         <nav aria-label="Primary" className="hidden items-center gap-9 lg:flex">
           {NAV_LINKS.map(link => <NavLink key={link.href} href={link.href}>{link.label}</NavLink>)}
         </nav>

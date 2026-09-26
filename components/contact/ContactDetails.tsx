@@ -29,11 +29,18 @@ export function ContactDetails() {
 
         <ContactRow label="Office">
           <address className="font-serif text-2xl not-italic text-charcoal">
-            {SITE_CONTACT.addressLines.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
+            <a
+              href={SITE_CONTACT_MAPS_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-300 hover:text-bronze"
+            >
+              {SITE_CONTACT.addressLines.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </a>
           </address>
           <a
             href={SITE_CONTACT_MAPS_HREF}
