@@ -188,7 +188,9 @@ img { transition: transform 900ms cubic-bezier(.22,1,.36,1); }
 .editorial-heading em { color: var(--bronze); }
 .section-title-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 36px; margin-bottom: 64px; }
 .section-title-row > .text-link { margin-bottom: 7px; flex-shrink: 0; }
-.site-header { background: var(--ivory); color: var(--charcoal); transition: box-shadow .3s; }
+.site-header { background: var(--ivory); color: var(--charcoal); transition: box-shadow .3s, transform .6s cubic-bezier(.22,1,.36,1); }
+/* Tucked, the header leaves its bottom 2px on screen: the reading-progress line keeps running along the top edge. Visible, it must stay `transform: none` — any transform would make it the containing block for the fixed mobile menu inside it. */
+.site-header.is-tucked:not(:focus-within) { transform: translateY(calc(-100% + 2px)); box-shadow: none; }
 .site-header.is-scrolled { box-shadow: 0 1px 0 #292e2520; }
 .reading-progress { position: absolute; inset: auto 0 0; height: 2px; background: var(--bronze); transform-origin: left; pointer-events: none; }
 .header-inner { height: 96px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
@@ -200,7 +202,8 @@ img { transition: transform 900ms cubic-bezier(.22,1,.36,1); }
 .header-cta svg { transition: transform .3s; }
 .header-cta:hover svg { transform: translate(2px,-2px); }
 .editorial-hero { padding-top: 132px; }
-.hero-kicker { display: flex; align-items: center; justify-content: space-between; padding-block: 12px 22px; border-top: 1px solid var(--beige); }
+.hero-kicker { position: relative; display: flex; align-items: center; justify-content: space-between; padding-block: 12px 22px; border-top: 1px solid transparent; }
+.hero-kicker::before { content: ""; position: absolute; inset: -1px 0 auto; height: 1px; background: var(--beige); transform-origin: left; }
 .hero-kicker .eyebrow { color: var(--charcoal-soft); }
 .hero-intro { display: flex; align-items: flex-end; justify-content: space-between; padding: 7px 0 48px; }
 .hero-title { font-family: var(--font-serif); font-size: clamp(78px,9.5vw,142px); font-weight: 350; letter-spacing: -.065em; line-height: .95; }
@@ -407,11 +410,97 @@ footer .eyebrow { color: #c2b99b; }
 @media (prefers-reduced-motion: no-preference) {
   .hero-explore svg { animation: discover-drift 2.4s ease-in-out infinite; }
   .text-link:active, .scene-controls button:active { transform: translateY(2px); }
-  .work-image { transition: transform .7s cubic-bezier(.22,1,.36,1); }
-  .work-link:hover .work-image { transform: translateY(-8px); }
+  .work-link:hover .work-image img, .work-link:focus-visible .work-image img, .gallery-open:hover img, .gallery-open:focus-visible img { transform: scale(1.03); }
+  .hero-kicker::before { animation: rule-draw 1.6s .1s cubic-bezier(.22,1,.36,1) both; }
+  /* Each slide settles slowly while it is on screen; a new slide mounts a new <img>, so this restarts per slide. */
+  .hero-scene-image img { animation: scene-settle 7.5s cubic-bezier(.25,.1,.25,1) both; }
+  .page-enter { animation: page-enter .7s cubic-bezier(.22,1,.36,1) both; }
 }
+@media (prefers-reduced-motion: reduce) { .site-header.is-tucked:not(:focus-within) { transform: translateY(-100%); } }
+@keyframes rule-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes scene-settle { from { transform: scale(1.06); } to { transform: scale(1); } }
+@keyframes page-enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes discover-drift {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(6px); }
 }
+
+/* Editorial finishing details and the full-composition photo viewer. */
+.circle-control { display: inline-grid; place-items: center; width: 46px; height: 46px; flex-shrink: 0; border: 1px solid currentColor; border-radius: 50%; transition: background .3s, color .3s, transform .3s; }
+.circle-control:hover { color: var(--ivory); background: var(--charcoal); border-color: var(--charcoal); }
+.circle-control:active { transform: scale(.94); }
+.gallery-intro { display: flex; justify-content: space-between; gap: 20px; align-items: center; border-top: 1px solid var(--beige); padding-block: 22px 38px; }
+.gallery-intro > :last-child { font-size: 12px; color: var(--charcoal-soft); }
+.gallery-open { position: relative; display: block; width: 100%; text-align: left; cursor: zoom-in; }
+.gallery-open-label { position: absolute; bottom: 18px; right: 18px; display: inline-flex; align-items: center; gap: 24px; padding: 13px 17px; background: var(--ivory); color: var(--charcoal); font-size: 10px; letter-spacing: .06em; opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s; }
+.gallery-open:hover .gallery-open-label, .gallery-open:focus-visible .gallery-open-label { opacity: 1; transform: none; }
+.photo-dialog { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #20241e; color: var(--ivory); }
+.photo-dialog::backdrop { background: #20241e; }
+.photo-dialog-layout { height: 100%; display: grid; grid-template-rows: auto minmax(0,1fr) auto; padding: 20px 40px 28px; gap: 20px; }
+.photo-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.photo-dialog .circle-control { border-color: #f6f4ed50; }
+.photo-dialog .circle-control:hover { background: var(--ivory); color: var(--charcoal); }
+.photo-dialog-image { position: relative; min-height: 0; }
+.photo-dialog-footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-top: 20px; border-top: 1px solid #f6f4ed30; }
+.photo-dialog-footer h2 { font-family: var(--font-serif); font-size: clamp(20px,2.4vw,30px); line-height: 1.25; font-weight: 350; margin-top: 8px; }
+.photo-dialog-footer .micro-label { color: #c2b99b; }
+.photo-dialog-controls { display: flex; gap: 10px; flex-shrink: 0; }
+.stories-section { background: var(--offwhite); padding-block: 100px 110px; }
+.stories-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.25fr); gap: 10%; }
+.stories-heading p { margin-top: 28px; color: var(--charcoal-soft); font-size: 13px; line-height: 1.85; }
+.stories-content { min-width: 0; }
+.stories-quote-mark { display: block; font-family: var(--font-serif); font-size: 85px; height: 68px; line-height: 1; color: var(--bronze); }
+.stories-quotes { display: grid; }
+.stories-quote { grid-area: 1/1; display: flex; flex-direction: column; justify-content: space-between; gap: 32px; transition: visibility .55s; }
+.stories-quote[aria-hidden="true"] { visibility: hidden; }
+.stories-quote blockquote { font-family: var(--font-serif); font-size: clamp(25px,2.7vw,38px); line-height: 1.4; font-weight: 350; letter-spacing: -.025em; }
+.stories-quote figcaption { display: flex; align-items: center; gap: 18px; font-size: 12px; }
+.stories-author-line { width: 28px; height: 1px; background: var(--bronze); }
+.stories-quote small { display: block; font-size: 10px; color: var(--charcoal-soft); margin-top: 4px; }
+.stories-controls { display: flex; align-items: center; gap: 22px; margin-top: 38px; padding-top: 22px; border-top: 1px solid var(--beige); }
+.stories-total { color: var(--charcoal-soft); margin-left: 6px; }
+.stories-pagination { display: flex; flex: 1; }
+.stories-pagination button { display: grid; place-items: center; width: 36px; height: 44px; }
+.stories-pagination span { width: 22px; height: 2px; background: var(--beige); transition: background .4s; }
+.stories-pagination .is-active { background: var(--bronze); }
+.footer-top { display: inline-flex; align-items: center; gap: 14px; }
+.footer-top svg { transition: transform .3s; }
+.footer-top:hover svg { transform: translateY(-4px); }
+.footer-top:hover { color: var(--ivory); }
+.form-field { position: relative; }
+.form-field > .eyebrow { transition: color .3s; }
+.form-field:focus-within > .eyebrow { color: var(--bronze-dark); }
+.form-field input:focus, .form-field textarea:focus, .form-field select:focus { box-shadow: 0 1px 0 var(--bronze); }
+.form-field input, .form-field textarea, .form-field select { border-radius: 0; }
+.enquiry-form { border-top: 1px solid var(--beige); padding-top: 30px; }
+.enquiry-intro p { font-size: 13px; color: var(--charcoal-soft); margin-top: 12px; max-width: 390px; line-height: 1.8; }
+.button-primary { display: inline-flex; width: fit-content; align-items: center; justify-content: space-between; gap: 40px; background: var(--charcoal); color: var(--ivory); border: 1px solid var(--charcoal); padding: 17px 24px; font-size: 12px; letter-spacing: .02em; transition: background .3s, color .3s; }
+.button-primary:hover { background: var(--charcoal-soft); }
+.button-primary:disabled { opacity: .5; cursor: wait; }
+@media (max-width: 767px) {
+  .stories-section { padding-block: 64px; }
+  .stories-layout { grid-template-columns: minmax(0,1fr); gap: 40px; }
+  .stories-heading p { margin-top: 20px; }
+  .stories-quote blockquote { font-size: 27px; }
+  .stories-controls { gap: 12px; }
+  .stories-pagination button { width: 26px; }
+  .stories-pagination span { width: 16px; }
+  .gallery-intro { align-items: flex-start; flex-direction: column; gap: 10px; padding-bottom: 28px; }
+  .photo-dialog-layout { padding: 14px 18px 20px; gap: 16px; }
+  .photo-dialog-header .micro-label { font-size: 8px; }
+  .photo-dialog-footer { align-items: flex-start; flex-direction: column; gap: 18px; }
+  .photo-dialog-footer h2 { font-size: 22px; }
+  .photo-dialog-footer .photo-dialog-controls { align-self: flex-end; }
+}
+@media (max-width: 375px) {
+  .stories-controls { flex-wrap: wrap; }
+  .stories-controls > .photo-dialog-controls { margin-left: auto; }
+}
+@media (hover: none) { .gallery-open-label { opacity: 1; transform: none; padding: 10px 13px; bottom: 12px; right: 12px; } }
+@media (prefers-reduced-motion: no-preference) {
+  .photo-dialog[open] { animation: viewer-enter .35s ease-out; }
+  .photo-dialog-image { animation: viewer-image .45s ease-out; }
+}
+@keyframes viewer-enter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes viewer-image { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 

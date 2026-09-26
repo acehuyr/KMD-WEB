@@ -30,7 +30,7 @@ export function FormField(props: FormFieldProps) {
   const { label, name, required, className } = props;
 
   return (
-    <label htmlFor={name} className={cx("flex flex-col gap-2", className)}>
+    <label htmlFor={name} className={cx("form-field flex flex-col gap-2", className)}>
       <span className="eyebrow">
         {label}
         {required && (

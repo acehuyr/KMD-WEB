@@ -20,7 +20,8 @@ export function EnquiryForm() {
   const [state, formAction, pending] = useActionState(submitEnquiry, initialState);
 
   return (
-    <form action={formAction} className="flex flex-col gap-10">
+    <form action={formAction} className="enquiry-form flex flex-col gap-10">
+      <div className="enquiry-intro"><span className="eyebrow">Tell us what you have in mind</span><p>Share a few details about your space, your plans, and what matters to you.</p></div>
       <div className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
         <FormField label="Name" name="name" required placeholder="Your full name" />
         <FormField label="Phone" name="phone" type="tel" required placeholder="+91" />
@@ -75,7 +76,7 @@ export function EnquiryForm() {
         <button
           type="submit"
           disabled={pending}
-          className="group inline-flex w-fit items-center gap-2 border border-bronze px-6 py-3.5 text-sm tracking-wide text-charcoal transition-colors duration-300 hover:bg-bronze hover:text-ivory disabled:cursor-not-allowed disabled:opacity-50"
+          className="group button-primary"
         >
           {pending ? "Sending…" : "Send Project Enquiry"}
           <span

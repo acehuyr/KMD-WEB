@@ -1,102 +1,44 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { MaskedLines } from "@/components/ui/MaskedLines";
+import { Reveal } from "@/components/ui/Reveal";
 import { TESTIMONIALS } from "@/content/testimonials";
-import { cx } from "@/lib/cx";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function Testimonials() {
   const [index, setIndex] = useState(0);
-  const prefersReducedMotion = useReducedMotion();
-  const testimonial = TESTIMONIALS[index];
-
-  const go = (direction: 1 | -1) => {
-    setIndex((prev) => (prev + direction + TESTIMONIALS.length) % TESTIMONIALS.length);
-  };
+  const reduce = useReducedMotion();
+  const go = (direction: number) => setIndex((current) => (current + direction + TESTIMONIALS.length) % TESTIMONIALS.length);
 
   return (
-    <section
-      aria-labelledby="testimonials-heading"
-      className="bg-offwhite py-section-md lg:py-section-lg"
-    >
-      <div className="wrapper flex flex-col gap-16">
-        <SectionHeading
-          id="testimonials-heading"
-          eyebrow="Client Stories"
-          lines={["What our clients say."]}
-          align="center"
-        />
-
-        <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-8">
-          <div className="relative w-full">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -12 }}
-                transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: EASE }}
-                className="flex flex-col items-center gap-6 text-center"
+    <section aria-labelledby="testimonials-heading" className="stories-section">
+      <div className="wrapper">
+        <div className="section-index"><span className="eyebrow">06 / Client stories</span><span className="micro-label">The spaces we make. The people who live in them.</span></div>
+        <div className="stories-layout">
+          <div className="stories-heading"><h2 id="testimonials-heading" className="editorial-heading"><MaskedLines lines={["At home.", <em key="em">In their words.</em>]} /></h2><Reveal delay={0.25}><p>A few words from the people<br />we’ve had the pleasure of working with.</p></Reveal></div>
+          <div className="stories-content">
+            <span className="stories-quote-mark" aria-hidden="true">“</span>
+            <div className="stories-quotes" aria-live="polite">
+              {TESTIMONIALS.map((testimonial, quoteIndex) => <motion.figure
+                key={testimonial.name}
+                className="stories-quote"
+                initial={false}
+                animate={{ opacity: index === quoteIndex ? 1 : 0, y: reduce || index === quoteIndex ? 0 : 14 }}
+                transition={{ duration: reduce ? 0 : .55, ease: [.22, 1, .36, 1] }}
+                aria-hidden={index !== quoteIndex}
+                style={{ pointerEvents: index === quoteIndex ? "auto" : "none" }}
               >
-                <span aria-hidden="true" className="font-serif text-6xl leading-none text-bronze">
-                  “
-                </span>
-                <p className="font-serif text-2xl leading-snug text-charcoal sm:text-3xl">
-                  {testimonial.quote}
-                </p>
-                <div className="flex flex-col gap-1 text-sm text-charcoal-soft">
-                  <span className="font-medium text-charcoal">{testimonial.name}</span>
-                  {testimonial.detail && <span>{testimonial.detail}</span>}
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          <div className="flex items-center gap-6 pt-4">
-            {/* The controls are padded out to a 24px hit area (WCAG 2.5.8
-                Target Size (Minimum)) while the dot itself stays a 6px
-                mark. Sizing the button to the dot would have made these
-                6px targets — unusable on a touch screen, and the smallest
-                interactive elements on the site. */}
-            <button
-              type="button"
-              onClick={() => go(-1)}
-              aria-label="Previous testimonial"
-              className="-m-2 flex h-11 w-11 items-center justify-center text-charcoal-soft transition-colors duration-300 hover:text-bronze"
-            >
-              ←
-            </button>
-            <div className="flex items-center">
-              {TESTIMONIALS.map((_, dotIndex) => (
-                <button
-                  key={dotIndex}
-                  type="button"
-                  onClick={() => setIndex(dotIndex)}
-                  aria-label={`Show testimonial ${dotIndex + 1}`}
-                  aria-current={dotIndex === index}
-                  className="flex h-6 w-6 items-center justify-center"
-                >
-                  <span
-                    aria-hidden="true"
-                    className={cx(
-                      "h-1.5 w-1.5 rounded-full transition-colors duration-300",
-                      dotIndex === index ? "bg-bronze" : "bg-beige"
-                    )}
-                  />
-                </button>
-              ))}
+                <blockquote>{testimonial.quote}</blockquote>
+                <figcaption><span className="stories-author-line" /><span>{testimonial.name}{testimonial.detail && <small>{testimonial.detail}</small>}</span></figcaption>
+              </motion.figure>)}
             </div>
-            <button
-              type="button"
-              onClick={() => go(1)}
-              aria-label="Next testimonial"
-              className="-m-2 flex h-11 w-11 items-center justify-center text-charcoal-soft transition-colors duration-300 hover:text-bronze"
-            >
-              →
-            </button>
+            <div className="stories-controls">
+              <span className="micro-label">{String(index + 1).padStart(2, "0")} <span className="stories-total">/ {String(TESTIMONIALS.length).padStart(2, "0")}</span></span>
+              <div className="stories-pagination">{TESTIMONIALS.map((item, i) => <button key={item.name} type="button" aria-label={`Show testimonial ${i + 1}`} aria-current={i === index ? "true" : undefined} onClick={() => setIndex(i)}><span className={i === index ? "is-active" : ""} /></button>)}</div>
+              <div className="photo-dialog-controls"><button className="circle-control" type="button" aria-label="Previous testimonial" onClick={() => go(-1)}><ArrowLeft size={18} /></button><button className="circle-control" type="button" aria-label="Next testimonial" onClick={() => go(1)}><ArrowRight size={18} /></button></div>
+            </div>
           </div>
         </div>
       </div>

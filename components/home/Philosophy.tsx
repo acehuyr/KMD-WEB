@@ -1,5 +1,6 @@
 import { RevealText } from "@/components/ui/RevealText";
 import { Reveal } from "@/components/ui/Reveal";
+import { Parallax } from "@/components/ui/Parallax";
 import { Photo } from "@/components/ui/Photo";
 import { getPhoto } from "@/content/projects";
 
@@ -8,7 +9,7 @@ export function Philosophy() {
     <section className="philosophy-section section-dark" aria-labelledby="philosophy-heading">
       <div className="wrapper philosophy-grid">
         <Reveal variant="image" className="philosophy-image">
-          <Photo photo={getPhoto("bedroom-agate-panels")} natural sizes="(min-width: 768px) 48vw, calc(100vw - 48px)" />
+          <Parallax><Photo photo={getPhoto("bedroom-agate-panels")} natural sizes="(min-width: 768px) 48vw, calc(100vw - 48px)" /></Parallax>
         </Reveal>
         <div className="philosophy-copy">
           <h2 id="philosophy-heading" className="eyebrow">The way we see it</h2>

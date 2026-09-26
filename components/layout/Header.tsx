@@ -14,6 +14,7 @@ export function Header() {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 160, damping: 35 });
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isTucked, setIsTucked] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const closeMenu = useCallback(() => {
@@ -21,8 +22,22 @@ export function Header() {
     menuButton.current?.focus();
   }, []);
 
+  // Tuck the header away while reading down the page and bring it back on
+  // any scroll up. Small deltas are accumulated rather than acted on, so
+  // trackpad jitter doesn't make it flicker.
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 20);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setIsScrolled(y > 20);
+      if (y < 480) {
+        setIsTucked(false);
+        lastY = y;
+      } else if (Math.abs(y - lastY) > 8) {
+        setIsTucked(y > lastY);
+        lastY = y;
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -41,7 +56,7 @@ export function Header() {
   }, [isMenuOpen, closeMenu]);
 
   return (
-    <header className={`site-header fixed inset-x-0 top-0 z-50 ${isScrolled ? "is-scrolled" : ""}`}>
+    <header className={`site-header fixed inset-x-0 top-0 z-50 ${isScrolled ? "is-scrolled" : ""} ${isTucked && !isMenuOpen ? "is-tucked" : ""}`}>
       {!reduce && <motion.div aria-hidden="true" className="reading-progress" style={{ scaleX: progress }} />}
       <div className="wrapper header-inner">
         <Logo />

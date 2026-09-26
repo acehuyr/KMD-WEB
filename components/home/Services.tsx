@@ -7,6 +7,7 @@ import { ArrowUpRight, Plus } from "lucide-react";
 import { SERVICES } from "@/content/services";
 import { getPhoto } from "@/content/projects";
 import { Photo } from "@/components/ui/Photo";
+import { MaskedLines } from "@/components/ui/MaskedLines";
 import { Reveal } from "@/components/ui/Reveal";
 
 const photos = ["living-room-marble-credenza", "entrance-brass-screen", "dining-room-crane-artwork"];
@@ -30,17 +31,17 @@ export function Services() {
           <span className="micro-label">From a vision to a place of your own</span>
         </div>
         <div className="services-grid">
-          <Reveal className="services-visual">
-            <h2 id="services-heading" className="editorial-heading">One vision.<br /><em>Every detail.</em></h2>
-            <div className="service-image">
+          <div className="services-visual">
+            <h2 id="services-heading" className="editorial-heading"><MaskedLines lines={["One vision.", <em key="em">Every detail.</em>]} /></h2>
+            <Reveal variant="image" className="service-image">
               <AnimatePresence initial={false}>
-                <motion.div key={activePhoto} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduce ? 0 : 0.5 }}>
+                <motion.div key={activePhoto} className="absolute inset-0" initial={{ opacity: 0, scale: reduce ? 1 : 1.04 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduce ? 0 : 0.9, ease }}>
                   <Photo photo={getPhoto(photos[activePhoto])} className="h-full w-full" sizes="(min-width: 768px) 45vw, calc(100vw - 48px)" />
                 </motion.div>
               </AnimatePresence>
-            </div>
+            </Reveal>
             <span className="micro-label">The thought. The craft. The complete picture.</span>
-          </Reveal>
+          </div>
           <div className="services-list">
             <p className="services-intro">Beautiful ideas deserve beautiful execution. We bring design and making together, with one team that sees it all through.</p>
             {SERVICES.map((service, index) => {

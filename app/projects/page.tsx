@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { FinalCta } from "@/components/home/FinalCta";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { PhotoGallery } from "@/components/projects/PhotoGallery";
 
@@ -34,7 +34,7 @@ export default function ProjectsPage() {
           <SectionHeading
             as="h1"
             id="projects-heading"
-            eyebrow="Projects"
+            eyebrow="Our work / Selected interiors"
             lines={["Considered spaces.", "Beautifully brought to life."]}
           />
           <p className="text-measure text-lg text-charcoal-soft">
@@ -50,26 +50,7 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <section className="bg-offwhite py-section-sm lg:py-section-md">
-        <div className="wrapper flex flex-col items-center gap-6 text-center">
-          <p className="text-measure text-charcoal-soft">
-            Planning something similar? We can walk you through how a project
-            like this comes together.
-          </p>
-          <Link
-            href="/contact"
-            className="group inline-flex items-center gap-2 border border-bronze px-6 py-3.5 text-sm tracking-wide text-charcoal transition-colors duration-300 hover:bg-bronze hover:text-ivory"
-          >
-            Start a Project
-            <span
-              aria-hidden="true"
-              className="transition-transform duration-300 group-hover:translate-x-1"
-            >
-              →
-            </span>
-          </Link>
-        </div>
-      </section>
+      <FinalCta />
     </>
   );
 }

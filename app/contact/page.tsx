@@ -17,7 +17,7 @@ export default function ContactPage() {
           as="h1"
           id="contact-heading"
           eyebrow="Start a Project"
-          lines={["Let’s create your next space."]}
+          lines={["A space of your own.", "Let’s begin."]}
         />
 
         <div className="grid gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-24">

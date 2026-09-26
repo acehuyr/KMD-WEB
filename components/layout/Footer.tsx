@@ -3,6 +3,8 @@ import { FOOTER_LINKS } from "@/lib/nav-links";
 import { SITE_CONTACT, SITE_CONTACT_MAPS_HREF } from "@/content/contact";
 import { COMPANY_FOOTER_NOTE } from "@/content/company";
 import { Logo } from "./Logo";
+import { ArrowUp } from "lucide-react";
+import { RevealText } from "@/components/ui/RevealText";
 
 /**
  * No social icons here on purpose. kmdinterior.com links to no social
@@ -70,7 +72,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="footer-masthead" aria-hidden="true">Spaces. Stories. Soul.</div>
+        <div aria-hidden="true"><RevealText as="div" trigger="inView" splitBy="word" lines={["Spaces. Stories. Soul."]} className="footer-masthead" /></div>
 
         {/*
           Privacy Policy / Terms links removed: /privacy and /terms are not
@@ -80,7 +82,7 @@ export function Footer() {
         */}
         <div className="flex flex-wrap justify-between gap-4 border-t border-ivory/15 pt-6 text-[10px] text-ivory/60">
           <p>© {year} KMD Interior. All Rights Reserved.</p>
-          <p>Made with care. Based in Mumbai.</p>
+          <a href="#main-content" className="footer-top">Back to the top <ArrowUp size={14} /></a>
         </div>
       </div>
     </footer>

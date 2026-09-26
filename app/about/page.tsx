@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { FinalCta } from "@/components/home/FinalCta";
+import { Reveal } from "@/components/ui/Reveal";
 import { RevealText } from "@/components/ui/RevealText";
 import { Photo } from "@/components/ui/Photo";
 import { Statistics } from "@/components/home/Statistics";
@@ -37,7 +38,7 @@ export default function AboutPage() {
         className="bg-ivory pb-16 pt-32 md:pt-40 lg:pb-24"
       >
         <div className="wrapper flex flex-col gap-8">
-          <span className="eyebrow">About</span>
+          <span className="eyebrow">The studio / Design & craft</span>
           <RevealText
             id="about-heading"
             as="h1"
@@ -53,12 +54,12 @@ export default function AboutPage() {
 
       <section className="bg-ivory pb-section-md lg:pb-section-lg">
         <div className="wrapper flex flex-col gap-12">
-          <Photo
+          <Reveal variant="image"><Photo
             photo={STORY_PHOTO}
             sizes="(min-width: 1280px) 1200px, 100vw"
             natural
             className="w-full"
-          />
+          /></Reveal>
           <div className="grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-20">
             <span className="eyebrow lg:pt-2">Who We Are</span>
             <div className="flex flex-col gap-5 text-measure text-lg text-charcoal-soft">
@@ -105,33 +106,7 @@ export default function AboutPage() {
 
       <Statistics />
 
-      <section className="bg-ivory py-section-sm lg:py-section-md">
-        <div className="wrapper flex flex-col items-center gap-8 text-center">
-          <p className="text-measure text-lg text-charcoal-soft">
-            Curious what this looks like in practice?
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-            <Link
-              href="/projects"
-              className="group inline-flex items-center gap-2 border border-bronze px-6 py-3.5 text-sm tracking-wide text-charcoal transition-colors duration-300 hover:bg-bronze hover:text-ivory"
-            >
-              See Our Work
-              <span
-                aria-hidden="true"
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              >
-                →
-              </span>
-            </Link>
-            <Link
-              href="/contact"
-              className="text-sm tracking-wide text-charcoal-soft underline decoration-beige underline-offset-4 transition-colors duration-300 hover:text-bronze hover:decoration-bronze"
-            >
-              Start a Project
-            </Link>
-          </div>
-        </div>
-      </section>
+      <FinalCta />
     </>
   );
 }

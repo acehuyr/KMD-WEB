@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Photo } from "@/components/ui/Photo";
+import { MaskedLines } from "@/components/ui/MaskedLines";
+import { Parallax } from "@/components/ui/Parallax";
 import { Reveal } from "@/components/ui/Reveal";
 import { getPhoto } from "@/content/projects";
 
@@ -15,11 +17,11 @@ export function FeaturedProjects() {
     <section className="selected-section" aria-labelledby="selected-heading">
       <div className="wrapper">
         <div className="section-index"><span className="eyebrow">02 / Selected work</span><span className="micro-label">A glimpse into our world</span></div>
-        <div className="section-title-row"><Reveal><h2 id="selected-heading" className="editorial-heading">Spaces with<br /><em>something to say.</em></h2></Reveal><Link href="/projects" className="text-link">Explore all interiors <ArrowUpRight size={18} /></Link></div>
+        <div className="section-title-row"><h2 id="selected-heading" className="editorial-heading"><MaskedLines lines={["Spaces with", <em key="em">something to say.</em>]} /></h2><Link href="/projects" className="text-link">Explore all interiors <ArrowUpRight size={18} /></Link></div>
         <div className="selected-grid">
           {work.map((item, index) => <div className={`selected-item selected-item-${index + 1}`} key={item.id}>
             <Link href={`/projects#${item.id}`} className="work-link" aria-label={`Explore ${item.title}`}>
-              <Reveal variant="image" className="work-image"><Photo photo={getPhoto(item.id)} natural sizes={index === 2 ? "(min-width: 768px) 70vw, 100vw" : index === 1 ? "(min-width: 768px) 33vw, 82vw" : "(min-width: 768px) 55vw, 100vw"} className="w-full" /></Reveal>
+              <Reveal variant="image" className="work-image"><Parallax><Photo photo={getPhoto(item.id)} natural sizes={index === 2 ? "(min-width: 768px) 70vw, 100vw" : index === 1 ? "(min-width: 768px) 33vw, 82vw" : "(min-width: 768px) 55vw, 100vw"} className="w-full" /></Parallax></Reveal>
               <div className="work-caption"><div><span className="micro-label">{item.detail}</span><h3>{item.title}</h3></div><span className="work-arrow"><ArrowUpRight size={22} strokeWidth={1.25} /></span></div>
             </Link>
           </div>)}
