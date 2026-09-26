@@ -195,7 +195,7 @@ img { transition: transform 900ms cubic-bezier(.22,1,.36,1); }
 .reading-progress { position: absolute; inset: auto 0 0; height: 2px; background: var(--bronze); transform-origin: left; pointer-events: none; }
 .header-inner { height: 96px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
 .brand-wordmark { display: flex; align-items: center; gap: 12px; }
-.brand-monogram { font-family: var(--font-serif); font-size: 37px; line-height: 1; letter-spacing: -.075em; font-weight: 450; }
+.brand-monogram { font-family: var(--font-serif); font-size: 34px; line-height: 1; letter-spacing: -.02em; font-weight: 450; }
 .brand-descriptor { border-left: 1px solid currentColor; padding-left: 12px; font-size: 9px; line-height: 1.6; letter-spacing: .19em; text-transform: uppercase; }
 .header-cta { display: inline-flex; align-items: center; gap: 26px; background: var(--charcoal); color: var(--ivory); padding: 13px 20px; font-size: 11px; transition: background .3s; }
 .header-cta:hover { background: var(--charcoal-soft); }
