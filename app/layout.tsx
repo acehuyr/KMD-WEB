@@ -2,7 +2,28 @@ import type { Metadata } from "next";
 import { Fraunces, Geist } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { BackToTop } from "@/components/motion/BackToTop";
+import { Cursor } from "@/components/motion/Cursor";
+import { Intro } from "@/components/motion/Intro";
+import { PageTransition } from "@/components/motion/PageTransition";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import "./globals.css";
+
+/**
+ * Runs before first paint and decides whether the intro curtain plays:
+ * once per browser session, never under reduced motion. It has to be
+ * inline and early — the curtain must already cover the page on the first
+ * frame, not appear over it after hydration. While the curtain is up it
+ * also holds the wheel and touch scroll, so nobody lands mid-page.
+ */
+const INTRO_SCRIPT = `(function(){try{
+if(sessionStorage.getItem("kmd-intro")||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+sessionStorage.setItem("kmd-intro","1");
+document.documentElement.dataset.intro="play";
+var o={passive:false,capture:true},h=function(e){e.preventDefault();e.stopPropagation()};
+addEventListener("wheel",h,o);addEventListener("touchmove",h,o);
+setTimeout(function(){removeEventListener("wheel",h,o);removeEventListener("touchmove",h,o)},2300);
+}catch(e){}})();`;
 
 // Clean grotesk sans for body copy, UI and navigation.
 const geistSans = Geist({
@@ -52,11 +73,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
+    // suppressHydrationWarning: INTRO_SCRIPT sets data-intro on <html>
+    // before React hydrates it. It covers this element's attributes only.
     <html
       lang="en"
       data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${fraunces.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: INTRO_SCRIPT }} />
+      </head>
       <body className="min-h-full flex flex-col">
         {/* Reveal animations are Framer Motion, which serialises its
             `initial` variant into the server HTML as an inline style —
@@ -69,12 +96,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             text is present in the markup. This restores them for that
             case only, and costs nothing when scripting is on. */}
         <noscript>
-          <style>{`[style*="opacity:0"],[style*="transform:"],[style*="clip-path"]{opacity:1!important;transform:none!important;clip-path:none!important}`}</style>
+          <style>{`[style*="opacity:0"],[style*="transform:"],[style*="clip-path"]{opacity:1!important;transform:none!important;clip-path:none!important}[data-reveal=image] img{scale:none!important}.hero-kicker::before{transform:none!important}`}</style>
         </noscript>
+        <Intro />
         <a href="#main-content" className="skip-link">Skip to content</a>
         <Header />
         <main id="main-content" className="flex-1">{children}</main>
         <Footer />
+        <BackToTop />
+        <PageTransition />
+        <Cursor />
+        <SmoothScroll />
       </body>
     </html>
   );

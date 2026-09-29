@@ -12,5 +12,4 @@ export type TeamMember = {
 export const TEAM: TeamMember[] = [
   { name: "Manish and Kishan", role: "Founders" },
   { name: "Narshi Suthar", role: "Projects & Contractor" },
-  { name: "Subhash Lawachh", role: "Project Head" },
 ];

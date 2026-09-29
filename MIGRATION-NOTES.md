@@ -48,8 +48,8 @@ Office, Restaurant.
 Discuss / Design / Implement), replacing an invented five-stage sequence.
 
 **Team** (`content/team.ts`) — Manish and Kishan (Founders), Narshi Suthar
-(Projects & Contractor), Subhash Lawachh (Project Head). Previously absent
-from the redesign.
+(Projects & Contractor). Previously absent from the redesign. One further
+name from the live site was removed at the client's request.
 
 **Testimonials** (`content/testimonials.ts`) — all four real quotes,
 replacing three `[CONFIRM: ...]` slots.

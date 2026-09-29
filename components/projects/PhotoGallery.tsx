@@ -64,7 +64,7 @@ export function PhotoGallery() {
             key={photo.id}
             className={cx("gallery-figure col-span-1", span)}
           >
-            <button type="button" className="gallery-open" onClick={() => setActive(index)} aria-label={`View full image: ${photo.caption}`} aria-haspopup="dialog">
+            <button type="button" className="gallery-open" data-cursor="view" data-cursor-label="Open" onClick={() => setActive(index)} aria-label={`View full image: ${photo.caption}`} aria-haspopup="dialog">
             <Photo
               photo={photo}
               natural
@@ -82,7 +82,7 @@ export function PhotoGallery() {
         );
       })}
     </div>
-    <dialog ref={dialog} className="photo-dialog" aria-labelledby="photo-dialog-title" onClose={() => setActive(null)} onKeyDown={(event) => { if (event.key === "ArrowRight") { event.preventDefault(); step(1); } if (event.key === "ArrowLeft") { event.preventDefault(); step(-1); } }}>
+    <dialog ref={dialog} className="photo-dialog" data-lenis-prevent aria-labelledby="photo-dialog-title" onClose={() => setActive(null)} onKeyDown={(event) => { if (event.key === "ArrowRight") { event.preventDefault(); step(1); } if (event.key === "ArrowLeft") { event.preventDefault(); step(-1); } }}>
       {photo && <div className="photo-dialog-layout">
         <header className="photo-dialog-header"><span className="micro-label">KMD Interior / Selected spaces</span><button type="button" className="circle-control" aria-label="Close photo viewer" onClick={() => dialog.current?.close()}><X size={22} /></button></header>
         <div className="photo-dialog-image" key={photo.id}><Image src={photo.src} alt={photo.alt} fill sizes="95vw" quality={90} className="object-contain" loading="eager" /></div>

@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import type { ElementType } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useRef, type ElementType } from "react";
 import { cx } from "@/lib/cx";
+import { useStageReady } from "@/lib/stage";
 
 type RevealTextProps = {
   /** One string per visual line — each line masks/reveals independently. */
@@ -46,6 +47,9 @@ export function RevealText({
   id,
 }: RevealTextProps) {
   const prefersReducedMotion = useReducedMotion();
+  const ref = useRef<HTMLSpanElement>(null);
+  const ready = useStageReady();
+  const inView = useInView(ref, { once: true, margin: "-10% 0px" });
   const byWord = splitBy === "word";
 
   const container = {
@@ -84,19 +88,15 @@ export function RevealText({
     },
   };
 
-  const viewportProps =
-    trigger === "inView"
-      ? {
-          whileInView: "visible",
-          viewport: { once: true, margin: "-10% 0px" },
-        }
-      : { animate: "visible" };
+  // Either trigger also waits for any curtain to lift — see lib/stage.ts.
+  const show = ready && (trigger === "mount" || inView);
 
   return (
     <Tag id={id} className={className} aria-label={lines.join(" ")}>
       <motion.span
+        ref={ref}
         initial="hidden"
-        {...viewportProps}
+        animate={show ? "visible" : undefined}
         variants={container}
         className="block"
         aria-hidden="true"

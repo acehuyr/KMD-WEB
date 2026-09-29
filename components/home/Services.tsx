@@ -27,7 +27,7 @@ export function Services() {
     <section id="services" className="services-section section-dark" aria-labelledby="services-heading">
       <div className="wrapper">
         <div className="section-index">
-          <span className="eyebrow">03 / What we do</span>
+          <span className="eyebrow">04 / What we do</span>
           <span className="micro-label">From a vision to a place of your own</span>
         </div>
         <div className="services-grid">

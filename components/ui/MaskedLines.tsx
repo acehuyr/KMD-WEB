@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useStageReady } from "@/lib/stage";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -16,14 +17,17 @@ const ease = [0.22, 1, 0.36, 1] as const;
  * visible area, so its own IntersectionObserver would never fire.
  */
 export function MaskedLines({ lines, delay = 0 }: { lines: ReactNode[]; delay?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
   const reduce = useReducedMotion();
+  const ready = useStageReady();
+  const inView = useInView(ref, { once: true, margin: "0px 0px -12% 0px" });
 
   return (
     <motion.span
+      ref={ref}
       className="block"
       initial={reduce ? false : "hidden"}
-      whileInView="visible"
-      viewport={{ once: true, margin: "0px 0px -12% 0px" }}
+      animate={ready && inView ? "visible" : undefined}
       variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12, delayChildren: reduce ? 0 : delay } } }}
     >
       {lines.map((line, index) => (

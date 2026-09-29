@@ -85,7 +85,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; }
 button:disabled { cursor: default; }
 em { font-weight: 350; }
-img { transition: transform 900ms cubic-bezier(.22,1,.36,1); }
+img { transition: transform 900ms cubic-bezier(.22,1,.36,1), scale 1.6s cubic-bezier(.22,1,.36,1); }
 .skip-link { position: fixed; top: -100px; left: 20px; z-index: 100; padding: 12px 20px; background: var(--charcoal); color: var(--ivory); }
 .skip-link:focus { top: 12px; }
 
@@ -414,10 +414,14 @@ footer .eyebrow { color: #c2b99b; }
   .hero-explore svg { animation: discover-drift 2.4s ease-in-out infinite; }
   .text-link:active, .scene-controls button:active { transform: translateY(2px); }
   .work-link:hover .work-image img, .work-link:focus-visible .work-image img, .gallery-open:hover img, .gallery-open:focus-visible img { transform: scale(1.03); }
-  .hero-kicker::before { animation: rule-draw 1.6s .1s cubic-bezier(.22,1,.36,1) both; }
+  /* Drawn once the intro curtain (if any) has lifted — HeroSplit sets data-ready. */
+  .hero-kicker:not([data-ready])::before { transform: scaleX(0); }
+  .hero-kicker[data-ready]::before { animation: rule-draw 1.6s .1s cubic-bezier(.22,1,.36,1) both; }
   /* Each slide settles slowly while it is on screen; a new slide mounts a new <img>, so this restarts per slide. */
   .hero-scene-image img { animation: scene-settle 7.5s cubic-bezier(.25,.1,.25,1) both; }
-  .page-enter { animation: page-enter .7s cubic-bezier(.22,1,.36,1) both; }
+  /* `backwards`, not `both`: a transform animation left filling after it ends keeps the
+     wrapper a containing block for fixed descendants, which would break GSAP's pinning. */
+  .page-enter { animation: page-enter .7s cubic-bezier(.22,1,.36,1) backwards; }
 }
 @media (prefers-reduced-motion: reduce) { .site-header.is-tucked:not(:focus-within) { transform: translateY(-100%); } }
 @keyframes rule-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
@@ -523,4 +527,144 @@ footer .eyebrow { color: #c2b99b; }
 @media (max-width: 767px) {
   .office-map { height: 360px; }
   .office-map-card { position: static; width: auto; padding: 24px 0 0; background: none; box-shadow: none; }
+}
+
+
+/*
+ * Motion layer
+ * -----------------------------------------------------------------------
+ * Intro curtain, route curtain, cursor, back-to-top, the homepage reel
+ * and capability marquee. Components live in components/motion and
+ * components/home; every piece has a reduced-motion answer here or in
+ * its component.
+ */
+
+/* Photographs settle from a slight zoom as their frame unmasks (Reveal sets data-shown). */
+[data-reveal="image"] img { scale: 1.12; }
+[data-reveal="image"][data-shown] img { scale: 1; }
+[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
+
+/* Intro — first visit per session. Pure CSS so it runs from the first frame; see components/motion/Intro.tsx. */
+.intro { display: none; }
+html[data-intro="play"] .intro { position: fixed; inset: 0; z-index: 200; display: block; pointer-events: none; touch-action: none; }
+.intro-panel { position: absolute; inset: 0; pointer-events: auto; will-change: transform; }
+.intro-panel-back { background: var(--charcoal-soft); animation: intro-lift 1s 1.82s cubic-bezier(.76,0,.24,1) forwards; }
+.intro-panel-front { display: grid; place-items: center; background: var(--charcoal); color: var(--ivory); animation: intro-lift 1s 1.7s cubic-bezier(.76,0,.24,1) forwards; }
+.intro-content { display: flex; flex-direction: column; align-items: center; gap: 20px; animation: intro-content-out .5s 1.45s cubic-bezier(.5,0,.75,0) forwards; }
+.intro-badge { width: 76px; height: 76px; opacity: 0; animation: intro-badge 1s .05s cubic-bezier(.22,1,.36,1) forwards; }
+.intro-wordmark { display: flex; font-family: var(--font-serif); font-size: clamp(72px, 11vw, 150px); font-weight: 350; line-height: 1; letter-spacing: -.04em; }
+.intro-letter-mask { display: block; overflow: hidden; padding-bottom: .1em; margin-bottom: -.1em; }
+.intro-letter-mask > span { display: block; transform: translateY(110%); animation: intro-rise .95s cubic-bezier(.22,1,.36,1) forwards; }
+.intro-rule { width: min(240px, 50vw); height: 1px; background: #f6f4ed26; overflow: hidden; }
+.intro-rule > span { display: block; height: 100%; background: var(--bronze); transform: scaleX(0); transform-origin: left; animation: intro-rule 1.1s .3s cubic-bezier(.65,0,.35,1) forwards; }
+.intro-tagline { font-size: 10px; letter-spacing: .26em; text-transform: uppercase; color: #c6c6b4; opacity: 0; animation: intro-fade .8s .6s ease forwards; }
+@keyframes intro-lift { to { transform: translate3d(0, -100%, 0); } }
+@keyframes intro-content-out { to { opacity: 0; transform: translate3d(0, -28px, 0); } }
+@keyframes intro-badge { from { opacity: 0; transform: scale(.8) rotate(-14deg); } to { opacity: 1; transform: none; } }
+@keyframes intro-rise { to { transform: translateY(0); } }
+@keyframes intro-rule { to { transform: scaleX(1); } }
+@keyframes intro-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Route curtain — driven by the Web Animations API in components/motion/PageTransition.tsx. */
+.page-curtain { position: fixed; inset: 0; z-index: 150; display: grid; place-items: center; background: var(--charcoal); color: var(--ivory); transform: translate3d(0, 100%, 0); visibility: hidden; pointer-events: none; will-change: transform; }
+.page-curtain.is-active { visibility: visible; pointer-events: auto; }
+.page-curtain-inner { display: flex; flex-direction: column; align-items: center; gap: 18px; padding-inline: 24px; text-align: center; }
+.page-curtain-eyebrow { font-size: 10px; letter-spacing: .26em; text-transform: uppercase; color: #c6c6b4; }
+.page-curtain-mask { display: block; overflow: hidden; padding-bottom: .14em; margin-bottom: -.14em; }
+.page-curtain-label { display: block; font-family: var(--font-serif); font-size: clamp(52px, 8vw, 124px); font-style: italic; font-weight: 350; line-height: 1; letter-spacing: -.045em; transform: translate3d(0, 110%, 0); }
+.page-curtain-loader { position: absolute; bottom: 52px; left: 50%; width: 120px; height: 1px; margin-left: -60px; overflow: hidden; background: #f6f4ed26; opacity: 0; transition: opacity .3s; }
+.page-curtain-loader::after { content: ""; position: absolute; inset: 0; background: var(--bronze); transform: translateX(-100%); }
+.page-curtain.is-waiting .page-curtain-loader { opacity: 1; }
+.page-curtain.is-waiting .page-curtain-loader::after { animation: curtain-wait 1.1s cubic-bezier(.65,0,.35,1) infinite; }
+@keyframes curtain-wait { to { transform: translateX(100%); } }
+
+/* Cursor — mouse only; the native pointer stays, this trails it. */
+.cursor { position: fixed; top: 0; left: 0; z-index: 300; pointer-events: none; color: var(--charcoal); opacity: 0; transition: opacity .3s, color .3s; }
+.cursor.is-visible { opacity: 1; }
+.cursor[data-tone="light"] { color: var(--ivory); }
+.cursor.is-visible[data-mode="hidden"], .cursor.is-visible[data-mode="text"] { opacity: 0; }
+.cursor-ring { position: absolute; top: -18px; left: -18px; width: 36px; height: 36px; border: 1px solid currentColor; border-radius: 50%; opacity: .45; transition: transform .45s cubic-bezier(.22,1,.36,1), opacity .3s, background-color .3s; }
+.cursor[data-mode="link"] .cursor-ring { transform: scale(1.7); opacity: .9; background-color: color-mix(in srgb, currentColor 7%, transparent); }
+.cursor.is-pressed .cursor-ring { transform: scale(.78); }
+.cursor.is-pressed[data-mode="link"] .cursor-ring { transform: scale(1.4); }
+.cursor-disc { position: absolute; top: -48px; left: -48px; width: 96px; height: 96px; display: grid; place-items: center; border-radius: 50%; background: var(--charcoal); color: var(--ivory); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; transform: scale(0); transition: transform .5s cubic-bezier(.22,1,.36,1); }
+.cursor[data-tone="light"] .cursor-disc { background: var(--ivory); color: var(--charcoal); }
+.cursor[data-mode="view"] .cursor-disc { transform: scale(1); }
+.cursor.is-pressed[data-mode="view"] .cursor-disc { transform: scale(.9); }
+.cursor[data-mode="view"] .cursor-ring { transform: scale(0); opacity: 0; }
+@media (hover: none), (pointer: coarse) { .cursor { display: none; } }
+
+/* Back to top */
+.back-to-top { position: fixed; right: 28px; bottom: 28px; z-index: 40; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--ivory); color: var(--charcoal); opacity: 0; visibility: hidden; transform: translateY(16px) scale(.9); transition: opacity .4s, visibility .4s, transform .5s cubic-bezier(.22,1,.36,1), background-color .3s, color .3s; }
+.back-to-top[data-visible] { opacity: 1; visibility: visible; transform: none; }
+.back-to-top:hover { background: var(--charcoal); color: var(--ivory); }
+.back-to-top > svg:first-child { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.back-to-top-track { fill: none; stroke: #292e2526; stroke-width: 1; }
+.back-to-top-fill { fill: none; stroke: var(--bronze); stroke-width: 1.5; }
+.back-to-top:hover .back-to-top-track { stroke: #f6f4ed40; }
+@media (max-width: 767px) { .back-to-top { right: 16px; bottom: 16px; width: 46px; height: 46px; } }
+
+/* Homepage reel — a swipe row by default; pinned and scroll-driven on desktop (GalleryReel.tsx). */
+.reel-section { padding-block: 64px; overflow: hidden; }
+.reel-title-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 36px; }
+.reel-meter { display: none; }
+.reel-viewport { margin-top: 36px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.reel-viewport::-webkit-scrollbar { display: none; }
+.reel-track { display: flex; align-items: flex-start; gap: 16px; width: max-content; padding-inline: var(--spacing-gutter-sm); }
+.reel-item { flex: none; scroll-snap-align: start; scroll-margin-left: var(--spacing-gutter-sm); }
+.reel-link { display: block; }
+.reel-item .reel-photo { width: 80vw; }
+.reel-item img { transition: scale .9s cubic-bezier(.22,1,.36,1); }
+.reel-link:hover img, .reel-link:focus-visible img { scale: 1.04; }
+.reel-caption { display: flex; align-items: baseline; gap: 16px; max-width: 38ch; padding-top: 16px; font-size: 12px; line-height: 1.6; color: var(--charcoal-soft); }
+.reel-end { flex: none; align-self: center; display: flex; flex-direction: column; gap: 22px; width: 64vw; padding-block: 36px; border-block: 1px solid var(--beige); scroll-snap-align: start; }
+.reel-end .micro-label { color: var(--charcoal-soft); }
+.reel-end-title { font-family: var(--font-serif); font-size: clamp(30px, 2.8vw, 44px); font-weight: 350; line-height: 1.1; letter-spacing: -.03em; }
+.reel-end-title em { color: var(--bronze); }
+.reel-end:hover .work-arrow, .reel-end:focus-visible .work-arrow { background: var(--charcoal); color: var(--ivory); border-color: var(--charcoal); }
+@media (min-width: 768px) {
+  .reel-section { padding-block: 100px; }
+  .reel-item .reel-photo { width: 58vw; }
+  .reel-end { width: 36vw; }
+}
+@media (min-width: 1024px) {
+  .reel-track { gap: clamp(36px, 4.5vw, 80px); padding-inline: max(var(--spacing-gutter-lg), calc((100vw - 90rem) / 2 + var(--spacing-gutter-lg))) 10vw; }
+  .reel-item { scroll-margin-left: var(--spacing-gutter-lg); }
+  .reel-item .reel-photo { width: auto; height: min(50vh, 540px); }
+  .reel-item-1 { margin-top: 9vh; }
+  .reel-item-1 .reel-photo { height: min(38vh, 420px); }
+  .reel-item-2 { margin-top: 3vh; }
+  .reel-item-2 .reel-photo { height: min(44vh, 480px); }
+  .reel-end { width: clamp(240px, 22vw, 340px); }
+}
+@media (min-width: 1500px) { .reel-track { padding-left: max(70px, calc((100vw - 100rem) / 2 + 70px)); } }
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .reel-section { display: flex; flex-direction: column; justify-content: center; height: 100svh; min-height: 620px; padding-block: 72px 40px; }
+  .reel-head .section-index { margin-bottom: 30px; }
+  .reel-meter { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; width: 220px; padding-bottom: 12px; }
+  .reel-meter .micro-label { color: var(--charcoal-soft); }
+  .reel-progress { position: relative; display: block; width: 100%; height: 1px; overflow: hidden; background: var(--beige); }
+  .reel-progress > span { position: absolute; inset: 0; background: var(--bronze); transform: scaleX(0); transform-origin: left; }
+  .reel-viewport { margin-top: 5vh; overflow: hidden; scroll-snap-type: none; }
+  .reel-track { will-change: transform; }
+  /* Headroom for the drift GSAP gives each picture inside its frame. */
+  .reel-item img { scale: 1.16; }
+  .reel-link:hover img, .reel-link:focus-visible img { scale: 1.2; }
+}
+
+/* Capability marquee — framer-motion drives the track; reduced motion gets a still, wrapped list. */
+.marquee-section { padding-block: 44px; border-block: 1px solid var(--beige); overflow: hidden; }
+.marquee-viewport { overflow: hidden; }
+.marquee-track { display: flex; width: max-content; will-change: transform; }
+.marquee-row { display: flex; flex: none; }
+.marquee-item { display: inline-flex; align-items: center; gap: .42em; padding-right: .42em; font-family: var(--font-serif); font-size: clamp(44px, 7.2vw, 116px); font-weight: 350; line-height: 1.12; letter-spacing: -.045em; white-space: nowrap; }
+.marquee-item:nth-child(even) { font-style: italic; color: var(--charcoal-soft); }
+.marquee-mark { font-size: .34em; font-style: normal; color: var(--bronze); }
+@media (min-width: 768px) { .marquee-section { padding-block: 64px; } }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { width: auto; transform: none !important; }
+  .marquee-row { flex: 1; flex-wrap: wrap; padding-inline: var(--spacing-gutter-sm); }
+  .marquee-row + .marquee-row { display: none; }
+  .marquee-item { font-size: clamp(28px, 4vw, 52px); white-space: normal; }
+  [data-reveal="image"] img { scale: none; }
 }

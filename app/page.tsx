@@ -1,8 +1,10 @@
 import { About } from "@/components/home/About";
+import { CapabilityMarquee } from "@/components/home/CapabilityMarquee";
 import { Clients } from "@/components/home/Clients";
 import { Expertise } from "@/components/home/Expertise";
 import { FeaturedProjects } from "@/components/home/FeaturedProjects";
 import { FinalCta } from "@/components/home/FinalCta";
+import { GalleryReel } from "@/components/home/GalleryReel";
 import { HeroSplit as Hero } from "@/components/home/HeroSplit";
 import { Philosophy } from "@/components/home/Philosophy";
 import { Process } from "@/components/home/Process";
@@ -24,10 +26,12 @@ export default function Home() {
       <Hero />
       <About />
       <FeaturedProjects />
+      <GalleryReel />
       <Services />
       <Process />
       <Philosophy />
       <Expertise />
+      <CapabilityMarquee />
       <Clients />
       <Testimonials />
       <FinalCta />

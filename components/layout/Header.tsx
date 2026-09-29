@@ -64,7 +64,7 @@ export function Header() {
           {NAV_LINKS.map(link => <NavLink key={link.href} href={link.href}>{link.label}</NavLink>)}
         </nav>
         <div className="flex items-center gap-3">
-          <Link href="/contact" className="header-cta hidden sm:inline-flex">Let’s talk <ArrowUpRight size={16} /></Link>
+          <Link href="/contact" className="header-cta hidden sm:inline-flex" data-magnetic>Let’s talk <ArrowUpRight size={16} /></Link>
           <button ref={menuButton} type="button" onClick={() => setIsMenuOpen(true)} className="inline-flex h-11 w-11 items-center justify-center lg:hidden" aria-label="Open menu" aria-haspopup="dialog" aria-expanded={isMenuOpen} aria-controls="mobile-menu"><Menu size={23} strokeWidth={1.25} /></button>
         </div>
       </div>
