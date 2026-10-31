@@ -59,7 +59,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: prefersReducedMotion ? 0 : 0.7, delay: prefersReducedMotion ? 0 : 0.9 }}
         >
-          From the first idea to the final detail, KMD Interior designs and
+          From the first idea to the final detail, KMD Interiors Pvt. Ltd. designs and
           executes thoughtfully crafted residential, commercial and
           hospitality spaces.
         </motion.p>

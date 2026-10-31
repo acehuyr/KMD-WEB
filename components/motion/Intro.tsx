@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import Image from "next/image";
+import { preload } from "react-dom";
+import { BrandMark } from "@/components/layout/Logo";
 import { setStageReady } from "@/lib/stage";
 
 /** Must match the `intro-lift` delay on the front panel in globals.css. */
@@ -23,7 +24,7 @@ function liftAnimation(selector: string) {
 }
 
 /**
- * The first-visit curtain: badge and wordmark on charcoal, then the panel
+ * The first-visit curtain: the KMD mark rising on charcoal, then the panel
  * lifts away to reveal the page.
  *
  * The whole sequence is CSS. The inline script in app/layout.tsx decides
@@ -35,6 +36,10 @@ function liftAnimation(selector: string) {
  * behind it, and removes the curtain once it has gone.
  */
 export function Intro() {
+  // The mark is a CSS mask, which the browser would otherwise only fetch
+  // once styles resolve — start it with the HTML so it's ready to rise.
+  preload("/brand/kmd-interiors-mark.png", { as: "image" });
+
   useEffect(() => {
     const root = document.documentElement;
     if (root.dataset.intro !== "play") return;
@@ -71,24 +76,9 @@ export function Intro() {
       <div className="intro-panel intro-panel-back" />
       <div className="intro-panel intro-panel-front">
         <div className="intro-content">
-          <Image
-            src="/brand/kmd-interior-badge.webp"
-            alt=""
-            width={80}
-            height={80}
-            quality={90}
-            loading="eager"
-            className="intro-badge"
-          />
-          <div className="intro-wordmark">
-            {["K", "M", "D"].map((letter, index) => (
-              <span key={letter} className="intro-letter-mask">
-                <span style={{ animationDelay: `${0.2 + index * 0.08}s` }}>{letter}</span>
-              </span>
-            ))}
-          </div>
+          <BrandMark className="brand-mark-light intro-mark" />
           <div className="intro-rule"><span /></div>
-          <span className="intro-tagline">Interior · Design &amp; craft</span>
+          <span className="intro-tagline">Interiors Pvt. Ltd.</span>
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ import { getPhoto } from "@/content/projects";
 export const metadata: Metadata = {
   title: "Careers",
   description:
-    "Join KMD Interior — designers, project professionals and craftsmen delivering interior design, turnkey contracting and carpentry in Mumbai.",
+    "Join KMD Interiors Pvt. Ltd. — designers, project professionals and craftsmen delivering interior design, turnkey contracting and carpentry in Mumbai.",
 };
 
 // A finished KMD interior rather than a "team at work" placeholder: no

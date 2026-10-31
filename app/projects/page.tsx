@@ -4,13 +4,13 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { PhotoGallery } from "@/components/projects/PhotoGallery";
 
 const DESCRIPTION =
-  "Completed interiors by KMD Interior — living spaces, bedrooms, bathrooms and entrance passages, photographed on site in Mumbai.";
+  "Completed interiors by KMD Interiors Pvt. Ltd. — living spaces, bedrooms, bathrooms and entrance passages, photographed on site in Mumbai.";
 
 export const metadata: Metadata = {
   title: "Projects",
   description: DESCRIPTION,
   openGraph: {
-    title: "Projects | KMD Interior",
+    title: "Projects | KMD Interiors Pvt. Ltd.",
     description: DESCRIPTION,
     images: [
       {

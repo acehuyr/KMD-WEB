@@ -81,7 +81,7 @@ export function Footer() {
           then link them.
         */}
         <div className="flex flex-wrap justify-between gap-4 border-t border-ivory/15 pt-6 text-[10px] text-ivory/60">
-          <p>© {year} KMD Interior. All Rights Reserved.</p>
+          <p>© {year} KMD Interiors Pvt. Ltd. All Rights Reserved.</p>
           <a href="#main-content" className="footer-top">Back to the top <ArrowUp size={14} /></a>
         </div>
       </div>

@@ -39,7 +39,7 @@ export function ApplicationForm() {
         label="Message"
         name="message"
         rows={5}
-        placeholder="Tell us a bit about yourself and why you'd like to join KMD Interior."
+        placeholder="Tell us a bit about yourself and why you'd like to join KMD Interiors Pvt. Ltd."
       />
 
       <div className="flex flex-col gap-4">

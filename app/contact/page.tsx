@@ -7,7 +7,7 @@ import { OfficeMap } from "@/components/contact/OfficeMap";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Start a project with KMD Interior — interior design, turnkey contracting and carpentry in Santacruz West, Mumbai. Call, WhatsApp or send a project enquiry.",
+    "Start a project with KMD Interiors Pvt. Ltd. — interior design, turnkey contracting and carpentry in Santacruz West, Mumbai. Call, WhatsApp or send a project enquiry.",
 };
 
 export default function ContactPage() {

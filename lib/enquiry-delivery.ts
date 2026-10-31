@@ -90,7 +90,7 @@ function emailChannel(): Channel | null {
       await transport.sendMail({
         // Gmail only sends as the signed-in account; the visitor goes in
         // Reply-To so answering the email reaches them.
-        from: { name: "KMD Interior Website", address: user },
+        from: { name: "KMD Interiors Website", address: user },
         to,
         replyTo: { name: enquiry.name, address: enquiry.email },
         subject,

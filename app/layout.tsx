@@ -40,7 +40,7 @@ const fraunces = Fraunces({
 });
 
 const SITE_DESCRIPTION =
-  "KMD Interior is a Mumbai design and artistry contracting firm with over 11 years of experience — interior design, turnkey contracting and custom carpentry, delivered by one team.";
+  "KMD Interiors Pvt. Ltd. is a Mumbai design and artistry contracting firm with over 11 years of experience — interior design, turnkey contracting and custom carpentry, delivered by one team.";
 
 /**
  * metadataBase is the domain the new site will replace the current one
@@ -50,15 +50,15 @@ const SITE_DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: new URL("https://kmdinterior.com"),
   title: {
-    default: "KMD Interior — Interior Design & Turnkey Contracting, Mumbai",
-    template: "%s | KMD Interior",
+    default: "KMD Interiors Pvt. Ltd. — Interior Design & Turnkey Contracting, Mumbai",
+    template: "%s | KMD Interiors Pvt. Ltd.",
   },
   description: SITE_DESCRIPTION,
   openGraph: {
     type: "website",
-    siteName: "KMD Interior",
+    siteName: "KMD Interiors Pvt. Ltd.",
     locale: "en_IN",
-    title: "KMD Interior — Interior Design & Turnkey Contracting, Mumbai",
+    title: "KMD Interiors Pvt. Ltd. — Interior Design & Turnkey Contracting, Mumbai",
     description: SITE_DESCRIPTION,
     images: [
       {

@@ -21,7 +21,7 @@ export async function generateMetadata(
     return {};
   }
 
-  const title = `${study.name} | KMD Interior`;
+  const title = `${study.name} | KMD Interiors Pvt. Ltd.`;
 
   return {
     title,

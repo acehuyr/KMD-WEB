@@ -16,7 +16,7 @@ const LABELS: Record<string, string> = {
 function labelFor(pathname: string) {
   if (LABELS[pathname]) return LABELS[pathname];
   if (pathname.startsWith("/projects/")) return "Our Work";
-  return "KMD Interior";
+  return "KMD Interiors Pvt. Ltd.";
 }
 
 const CURTAIN_EASE = "cubic-bezier(0.76, 0, 0.24, 1)";
@@ -199,7 +199,7 @@ export function PageTransition() {
   return (
     <div ref={curtainRef} className="page-curtain" aria-hidden="true">
       <div className="page-curtain-inner">
-        <span className="page-curtain-eyebrow">KMD Interior</span>
+        <span className="page-curtain-eyebrow">KMD Interiors Pvt. Ltd.</span>
         <span className="page-curtain-mask">
           <span ref={labelRef} className="page-curtain-label" />
         </span>

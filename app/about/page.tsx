@@ -9,13 +9,13 @@ import { getPhoto } from "@/content/projects";
 import { TEAM } from "@/content/team";
 
 const DESCRIPTION =
-  "KMD Interior is a Mumbai-based design and artistry contracting firm with over 11 years of experience, specialising in interior craftsmanship for turnkey projects.";
+  "KMD Interiors Pvt. Ltd. is a Mumbai-based design and artistry contracting firm with over 11 years of experience, specialising in interior craftsmanship for turnkey projects.";
 
 export const metadata: Metadata = {
   title: "About",
   description: DESCRIPTION,
   openGraph: {
-    title: "About | KMD Interior",
+    title: "About | KMD Interiors Pvt. Ltd.",
     description: DESCRIPTION,
     images: [
       {

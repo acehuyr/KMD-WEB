@@ -10,7 +10,7 @@ export type GalleryPhoto = {
 };
 
 /**
- * KMD Interior's completed work, as photographed.
+ * KMD Interiors Pvt. Ltd.'s completed work, as photographed.
  *
  * This is a photo gallery rather than a list of named projects, and that
  * is deliberate. The live site at kmdinterior.com publishes these

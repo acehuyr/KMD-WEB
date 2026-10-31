@@ -14,18 +14,30 @@ Settings live in environment variables (listed in `.env.example`):
 `.env.local` on your computer, and Vercel's Environment Variables for
 the live site.
 
-## 1. Email (Gmail)
+## 1. Email (info@kmdinterior.com)
 
-1. Sign in to the Gmail account that should *send* the emails
-   (e.g. kmdinterior101@gmail.com).
-2. Turn on 2-Step Verification: myaccount.google.com → Security.
+Enquiries arrive at **info@kmdinterior.com**, sent from that same
+Google Workspace mailbox.
+
+1. Sign in to Google as info@kmdinterior.com.
+2. Turn on 2-Step Verification: myaccount.google.com → Security. If
+   Google won't let you, a Workspace admin has to allow it first:
+   admin.google.com → Security → Authentication → 2-Step Verification →
+   "Allow users to turn on 2-Step Verification".
 3. Create an App Password: myaccount.google.com/apppasswords → name it
    "KMD website" → copy the 16-character password.
-4. In `.env.local` set:
-   - `SMTP_USER` — that Gmail address
-   - `SMTP_PASS` — the App Password (spaces optional)
-   - `ENQUIRY_TO_EMAIL` — where enquiries should arrive (can be the same
-     address, or several separated by commas)
+4. In `.env.local`, paste it after `SMTP_PASS=` (spaces optional). The
+   other settings are already filled in:
+   - `ENQUIRY_TO_EMAIL=info@kmdinterior.com` — where enquiries arrive
+     (add more addresses separated by commas)
+   - `SMTP_USER=info@kmdinterior.com`
+
+Each email comes from "KMD Interior Website", and pressing Reply
+answers the client directly.
+
+kmdinterior.com's MX records must point to Google (in Workspace's setup
+steps, or Hostinger → Domains → DNS), or email from outside — including
+clients' replies — still goes to the old Hostinger mailbox.
 
 ## 2. Google Sheet (Excel)
 

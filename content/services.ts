@@ -6,7 +6,7 @@ export type Service = {
 };
 
 /**
- * The three services KMD Interior actually offers, as published on the
+ * The three services KMD Interiors Pvt. Ltd. actually offers, as published on the
  * live site's Services page. Descriptions are faithful rewrites of that
  * copy — tightened for readability, with no claim added.
  *

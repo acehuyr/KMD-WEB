@@ -7,7 +7,7 @@
  * live site states. Nothing in this file is inferred or invented.
  */
 
-/** Strapline from the KMD Interior logo mark. */
+/** Strapline from the original KMD Interior badge logo. */
 export const COMPANY_TAGLINE = "The Interior Decorators Choice";
 
 /** Homepage hero line on the live site. */
@@ -36,7 +36,7 @@ export const COMPANY_FOOTER_NOTE =
  * carpentry heritage, the mission wording) appears on the live site.
  */
 export const COMPANY_STORY: string[] = [
-  "KMD Interior is a full-service design and artistry contracting firm with over 11 years of experience, specialising in interior craftsmanship for turnkey projects.",
+  "KMD Interiors Pvt. Ltd. is a full-service design and artistry contracting firm with over 11 years of experience, specialising in interior craftsmanship for turnkey projects.",
   "We have built a credible reputation as one of the most reliable service providers in the field — translating ideas and dreams into the language of interior architecture, and finding elegant solutions to complicated problems.",
   "Our mission is to deliver work that goes beyond standard practice, and to keep excelling as a company defined by dedication, transparency, quality and service.",
   "Our strength lies in a genuine passion for making things, bringing distinctive detail to both modern and traditional interiors. Carpentry is where the firm began, and it remains the craft at the centre of everything we build.",
@@ -44,7 +44,7 @@ export const COMPANY_STORY: string[] = [
 
 /** Short version of the above, for the homepage About section. */
 export const COMPANY_STORY_SHORT: string[] = [
-  "For over 11 years, KMD Interior has worked as a full-service design and artistry contracting firm, specialising in interior craftsmanship for turnkey projects.",
+  "For over 11 years, KMD Interiors Pvt. Ltd. has worked as a full-service design and artistry contracting firm, specialising in interior craftsmanship for turnkey projects.",
   "Carpentry is where the firm began, and it remains the craft at the centre of everything we build — from a single fitted wardrobe to a complete interior delivered end to end.",
 ];
 

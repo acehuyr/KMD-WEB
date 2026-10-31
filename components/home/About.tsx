@@ -14,7 +14,7 @@ export function About() {
       <div className="studio-bottom">
         <Reveal className="studio-detail" variant="image"><Photo photo={getPhoto("corridor-fitted-joinery")} natural sizes="(min-width: 768px) 25vw, 70vw" /><span className="micro-label">Craft, in every corner.</span></Reveal>
         <Reveal className="studio-copy" delay={0.12}>
-          <p>We are KMD Interior, a Mumbai-based design and artistry contracting firm. We bring spaces to life through considered design, honest materials and a deep-rooted love for making.</p>
+          <p>We are KMD Interiors Pvt. Ltd., a Mumbai-based design and artistry contracting firm. We bring spaces to life through considered design, honest materials and a deep-rooted love for making.</p>
           <p>From the first sketch to the final finish, our designers and craftspeople work as one. Over 11 years of experience. One thoughtful, seamless journey.</p>
           <Link href="/about" className="text-link">A little more about us <ArrowUpRight size={18} /></Link>
         </Reveal>

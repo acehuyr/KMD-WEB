@@ -10,7 +10,7 @@ export function Statistics() {
     >
       <div className="wrapper">
         <h2 id="stats-heading" className="sr-only">
-          KMD Interior, in numbers
+          KMD Interiors Pvt. Ltd., in numbers
         </h2>
 
         <div className="border-y border-beige">
