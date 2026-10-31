@@ -81,6 +81,15 @@ function emailChannel(): Channel | null {
     port,
     secure: port === 465,
     auth: { user, pass },
+    // nodemailer waits up to 2 minutes to connect, far past a serverless
+    // function's time limit, so a stuck connection killed the request and
+    // crashed the page. It picks the mail server's address at random from
+    // its IPv4 and IPv6 ones, and where IPv6 isn't routed (as on Vercel)
+    // the connection just hangs. Giving up after a few seconds moves on to
+    // the next address, well inside maxDuration in app/contact/page.tsx.
+    connectionTimeout: 5_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 20_000,
   });
 
   return {

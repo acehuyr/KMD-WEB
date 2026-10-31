@@ -10,6 +10,12 @@ export const metadata: Metadata = {
     "Start a project with KMD Interiors Pvt. Ltd. — interior design, turnkey contracting and carpentry in Santacruz West, Mumbai. Call, WhatsApp or send a project enquiry.",
 };
 
+// The enquiry form's server action runs under this page's time limit.
+// Sending through Gmail takes a few seconds, more if a mail server address
+// has to be retried (lib/enquiry-delivery.ts), so allow a minute rather
+// than the platform default.
+export const maxDuration = 60;
+
 export default function ContactPage() {
   return (
     <>
