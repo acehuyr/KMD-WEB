@@ -1,9 +1,11 @@
 "use client";
 
-import { startTransition, useActionState, useEffect, useRef, type FormEvent } from "react";
+import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from "react";
+import { CheckCircle2, AlertCircle, LoaderCircle } from "lucide-react";
 import { FormField } from "@/components/forms/FormField";
 import { submitEnquiry, type EnquiryFormState } from "@/app/contact/actions";
 import { cx } from "@/lib/cx";
+import { SITE_CONTACT } from "@/content/contact";
 
 const PROJECT_TYPE_OPTIONS = [
   { label: "Residential", value: "Residential" },
@@ -17,8 +19,30 @@ const PROJECT_TYPE_OPTIONS = [
 const initialState: EnquiryFormState = { status: "idle", message: "" };
 
 export function EnquiryForm() {
-  const [state, formAction, pending] = useActionState(submitEnquiry, initialState);
+  const [state, formAction, pending] = useActionState(
+    async (previous: EnquiryFormState, data: FormData): Promise<EnquiryFormState> => {
+      try {
+        return await submitEnquiry(previous, data);
+      } catch {
+        // A network interruption or server timeout must not crash the form
+        // or claim that delivery succeeded. Keep the visitor's draft.
+        return {
+          status: "error",
+          message: `We couldn't confirm whether your enquiry was sent. Your details are still here. Please contact us on ${SITE_CONTACT.phoneDisplay} or email ${SITE_CONTACT.email} before trying again.`,
+        };
+      }
+    },
+    initialState,
+  );
   const formRef = useRef<HTMLFormElement>(null);
+  const feedbackRef = useRef<HTMLDivElement>(null);
+  const [isTakingLonger, setIsTakingLonger] = useState(false);
+
+  useEffect(() => {
+    if (!pending) return;
+    const timer = window.setTimeout(() => setIsTakingLonger(true), 8000);
+    return () => window.clearTimeout(timer);
+  }, [pending]);
 
   // React resets a form after every action, which would wipe a long
   // message when sending fails. Submitting through a transition skips
@@ -26,12 +50,18 @@ export function EnquiryForm() {
   // (Without JavaScript, `action` still posts the form normally.)
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (pending) return;
+    setIsTakingLonger(false);
     const formData = new FormData(event.currentTarget);
     startTransition(() => formAction(formData));
   };
 
   useEffect(() => {
     if (state.status === "success") formRef.current?.reset();
+    if (state.status !== "idle") {
+      feedbackRef.current?.focus({ preventScroll: true });
+      feedbackRef.current?.scrollIntoView({ behavior: "instant", block: "nearest" });
+    }
   }, [state]);
 
   return (
@@ -100,7 +130,7 @@ export function EnquiryForm() {
           disabled={pending}
           className="group button-primary"
         >
-          {pending ? "Sending…" : "Send Project Enquiry"}
+          {pending ? "Sending your enquiry…" : state.status === "success" ? "Enquiry sent ✓" : "Send Project Enquiry"}
           <span
             aria-hidden="true"
             className="transition-transform duration-300 group-hover:translate-x-1"
@@ -109,17 +139,29 @@ export function EnquiryForm() {
           </span>
         </button>
 
-        {state.message && (
-          <p
-            aria-live="polite"
+        <div
+          ref={feedbackRef}
+          tabIndex={-1}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          className="outline-none"
+        >
+        {(pending || state.message) && (
+          <div
             className={cx(
-              "text-sm",
-              state.status === "error" ? "text-bronze-dark" : "text-charcoal-soft"
+              "flex items-start gap-3 border p-5 text-sm",
+              pending ? "border-bronze/30 bg-ivory text-charcoal" : state.status === "error" ? "border-red-800/25 bg-red-50 text-red-950" : "border-green-800/25 bg-green-50 text-green-950"
             )}
           >
-            {state.message}
-          </p>
+            {pending ? <LoaderCircle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 motion-safe:animate-spin" /> : state.status === "success" ? <CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" /> : <AlertCircle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" />}
+            <div>
+              <p className="font-semibold">{pending ? "Sending your enquiry" : state.status === "success" ? "Your enquiry has been sent" : "Please check your enquiry"}</p>
+              <p className="mt-1 leading-relaxed">{pending ? isTakingLonger ? "This is taking a little longer. Please keep this page open — we'll confirm the result here." : "Please wait while we send your details. You don't need to submit again." : state.message}</p>
+            </div>
+          </div>
         )}
+        </div>
       </div>
     </form>
   );
