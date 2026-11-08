@@ -36,9 +36,8 @@ function liftAnimation(selector: string) {
  * behind it, and removes the curtain once it has gone.
  */
 export function Intro() {
-  // The mark is a CSS mask, which the browser would otherwise only fetch
-  // once styles resolve — start it with the HTML so it's ready to rise.
-  preload("/brand/kmd-interiors-mark.png", { as: "image" });
+  // Load the supplied artwork before the intro starts.
+  preload("/brand/kmd-logo.jpeg", { as: "image" });
 
   useEffect(() => {
     const root = document.documentElement;
@@ -76,9 +75,8 @@ export function Intro() {
       <div className="intro-panel intro-panel-back" />
       <div className="intro-panel intro-panel-front">
         <div className="intro-content">
-          <BrandMark className="brand-mark-light intro-mark" />
+          <BrandMark className="intro-mark" />
           <div className="intro-rule"><span /></div>
-          <span className="intro-tagline">Interiors Pvt. Ltd.</span>
         </div>
       </div>
     </div>

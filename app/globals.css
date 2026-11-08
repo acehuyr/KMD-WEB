@@ -196,11 +196,10 @@ img { transition: transform 900ms cubic-bezier(.22,1,.36,1), scale 1.6s cubic-be
 .reading-progress { position: absolute; inset: auto 0 0; height: 2px; background: var(--bronze); transform-origin: left; pointer-events: none; }
 .header-inner { height: 96px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
 .brand-wordmark { display: flex; align-items: center; gap: 14px; }
-.brand-mark { display: block; flex-shrink: 0; aspect-ratio: 387 / 300; height: 52px; background-color: var(--bronze); -webkit-mask: url("/brand/kmd-interiors-mark.png") center / contain no-repeat; mask: url("/brand/kmd-interiors-mark.png") center / contain no-repeat; }
-.brand-mark-light, footer .brand-mark { background-color: var(--bronze-light); }
-footer .brand-mark { height: 68px; }
-.mobile-menu-brand .brand-mark { height: 44px; }
-.brand-descriptor { border-left: 1px solid currentColor; padding-left: 12px; font-size: 9px; line-height: 1.6; letter-spacing: .19em; text-transform: uppercase; }
+/* Trim only the photo's empty vertical margins; preserve the full artwork. */
+.brand-mark { display: block; flex-shrink: 0; width: auto; aspect-ratio: 640 / 460; height: 80px; object-fit: cover; object-position: center 44%; }
+footer .brand-mark { height: 144px; }
+.mobile-menu-brand .brand-mark { height: 64px; }
 .header-cta { display: inline-flex; align-items: center; gap: 26px; background: var(--charcoal); color: var(--ivory); padding: 13px 20px; font-size: 11px; transition: background .3s; }
 .header-cta:hover { background: var(--charcoal-soft); }
 .header-cta svg { transition: transform .3s; }
@@ -324,7 +323,7 @@ footer .eyebrow { color: #c2b99b; }
 @media (min-width: 1500px) { .wrapper { max-width: 100rem; padding-inline: 70px; } }
 @media (max-width: 1023px) {
   .header-inner { height: 80px; }
-  .site-header .brand-mark { height: 44px; }
+  .site-header .brand-mark { height: 64px; }
   .editorial-hero { padding-top: 110px; }
   .hero-title { font-size: 10.5vw; }
   .hero-note { width: 210px; }
@@ -520,7 +519,7 @@ footer .eyebrow { color: #c2b99b; }
 .office-map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: saturate(.6) sepia(.06); }
 .office-map-card { position: absolute; top: 28px; left: calc(var(--spacing-gutter-lg) + 28px); width: 340px; display: flex; flex-direction: column; gap: 16px; padding: 28px 28px 24px; background: var(--ivory); box-shadow: 0 18px 40px -24px #292e2560; }
 .office-map-name { display: flex; align-items: center; gap: 14px; }
-.office-map-name .brand-mark { height: 44px; }
+.office-map-name .brand-mark { height: 80px; }
 .office-map-name h2 { font-family: var(--font-serif); font-size: 30px; font-weight: 350; line-height: 1.1; letter-spacing: -.025em; }
 .office-map-card address { font-style: normal; font-size: 13px; line-height: 1.85; color: var(--charcoal-soft); }
 .office-map-card .text-link { width: 100%; }

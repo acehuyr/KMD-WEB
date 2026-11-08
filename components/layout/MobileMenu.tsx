@@ -60,8 +60,7 @@ export function MobileMenu({
         >
           <div className="wrapper flex h-20 items-center justify-between">
             <span className="brand-wordmark mobile-menu-brand">
-              <BrandMark className="brand-mark-light" />
-              <span className="brand-descriptor">Interiors<br />Pvt. Ltd.</span>
+              <BrandMark />
             </span>
             <button
               ref={closeButtonRef}
